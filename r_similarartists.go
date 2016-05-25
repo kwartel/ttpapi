@@ -1,4 +1,4 @@
-package whatapi
+package ttpapi
 
 type SimilarArtists []struct {
 	ID    int    `json:"id"`

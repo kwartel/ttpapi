@@ -1,4 +1,4 @@
-package whatapi
+package ttpapi
 
 type Notifications struct {
 	CurrentPages int `json:"currentPages"`

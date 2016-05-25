@@ -1,4 +1,4 @@
-package whatapi
+package ttpapi
 
 type TopTenTags []struct {
 	Caption string `json:"caption"`

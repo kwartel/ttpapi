@@ -1,4 +1,4 @@
-package whatapi
+package ttpapi
 
 type Conversation struct {
 	ConvID   int    `json:"convId"`

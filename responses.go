@@ -1,4 +1,4 @@
-package whatapi
+package ttpapi
 
 type AccountResponse struct {
 	Status   string  `json:"status"`

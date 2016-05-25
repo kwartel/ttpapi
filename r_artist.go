@@ -1,4 +1,4 @@
-package whatapi
+package ttpapi
 
 type Artist struct {
 	ID                   int    `json:"id"`

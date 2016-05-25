@@ -1,4 +1,4 @@
-package whatapi
+package ttpapi
 
 type TorrentGroup struct {
 	Group   GroupType     `json:"group"`

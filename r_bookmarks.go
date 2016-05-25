@@ -1,4 +1,4 @@
-package whatapi
+package ttpapi
 
 type ArtistBookmarks struct {
 	Artists []struct {

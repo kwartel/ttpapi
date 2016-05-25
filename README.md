@@ -1,48 +1,48 @@
-whatapi
+ttpapi
 =======
 
-A Go wrapper for the What.CD [JSON API](https://github.com/WhatCD/Gazelle/wiki/JSON-API-Documentation)
+A Go wrapper for the 32P [JSON API](https://github.com/TtpCD/Gazelle/wiki/JSON-API-Documentation)
 
 
 Install
 -------
 
 ```
-go get "github.com/kdvh/whatapi"
+go get "github.com/kwartel/ttpapi"
 ```
 
 Example
 -------
 ```Go
-    wcd, err := whatapi.NewWhatAPI("https://what.cd/")
+    ttp, err := ttpapi.NewTtpAPI("https://32PURL/")
     if err != nil {
         log.Fatal(err)
     }
-    err = wcd.Login("username","password")
+    err = ttp.Login("username","password")
     if err != nil {
         log.Fatal(err)
     }
     mailboxParams := url.Values{}
     mailboxParams.Set("type", "sentbox")
-    mailbox, err := wcd.GetMailbox(mailboxParams)
+    mailbox, err := ttp.GetMailbox(mailboxParams)
     if err != nil {
         log.Fatal(err)
     }
     log.Println(mailbox)
 
-    conversation, err := wcd.GetConversation(mailbox.Messages[0].ConvID)
+    conversation, err := ttp.GetConversation(mailbox.Messages[0].ConvID)
     if err != nil {
         log.Fatal(err)
     }      
     log.Println(conversation.Messages[0].Body)
-        
+
     torrentSearchParams := url.Values{}
-    torrentSearch, err := wcd.SearchTorrents("Tool",torrentSearchParams)
+    torrentSearch, err := ttp.SearchTorrents("Tool",torrentSearchParams)
     if err != nil {
         log.Fatal(err)
     }
 
-    downloadURL, err := wcd.CreateDownloadURL(torrentSearch.Results[0].Torrents[0].TorrentID)
+    downloadURL, err := ttp.CreateDownloadURL(torrentSearch.Results[0].Torrents[0].TorrentID)
     if err != nil {
         log.Fatal(downloadURL)
     }

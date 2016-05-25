@@ -1,4 +1,4 @@
-package whatapi
+package ttpapi
 
 type User struct {
 	Username    string `json:"username"`

@@ -1,4 +1,4 @@
-package whatapi
+package ttpapi
 
 type RequestsSearch struct {
 	CurrentPage int `json:"currentPage"`

@@ -1,5 +1,5 @@
-//Package whatapi is a wrapper for the What.CD JSON API (https://github.com/WhatCD/Gazelle/wiki/JSON-API-Documentation).
-package whatapi
+//Package ttpapi is a wrapper for the 32P JSON API (https://github.com/TtpCD/Gazelle/wiki/JSON-API-Documentation).
+package ttpapi
 
 import (
 	"encoding/json"
@@ -10,9 +10,9 @@ import (
 	"strconv"
 )
 
-//NewWhatAPI creates a new client for the What.CD API using the provided URL.
-func NewWhatAPI(url string) (*WhatAPI, error) {p[r]
-	w := new(WhatAPI)
+//NewTtpAPI creates a new client for the 32P API using the provided URL.
+func NewTtpAPI(url string) (*TtpAPI, error) {
+	w := new(TtpAPI)
 	w.baseURL = url
 	cookieJar, err := cookiejar.New(nil)
 	if err != nil {
@@ -22,8 +22,8 @@ func NewWhatAPI(url string) (*WhatAPI, error) {p[r]
 	return w, err
 }
 
-//WhatAPI represents a client for the What.CD API.
-type WhatAPI struct {
+//TtpAPI represents a client for the 32P API.
+type TtpAPI struct {
 	baseURL  string
 	client   *http.Client
 	authkey  string
@@ -32,7 +32,7 @@ type WhatAPI struct {
 }
 
 //GetJSON sends a HTTP GET request to the API and decodes the JSON response into responseObj.
-func (w *WhatAPI) GetJSON(requestURL string, responseObj interface{}) error {
+func (w *TtpAPI) GetJSON(requestURL string, responseObj interface{}) error {
 	if w.loggedIn {
 		resp, err := w.client.Get(requestURL)
 		if err != nil {
@@ -53,7 +53,7 @@ func (w *WhatAPI) GetJSON(requestURL string, responseObj interface{}) error {
 }
 
 //CreateDownloadURL constructs a download URL using the provided torrent id.
-func (w *WhatAPI) CreateDownloadURL(id int) (string, error) {
+func (w *TtpAPI) CreateDownloadURL(id int) (string, error) {
 	if w.loggedIn {
 		params := url.Values{}
 		params.Set("action", "download")
@@ -71,7 +71,7 @@ func (w *WhatAPI) CreateDownloadURL(id int) (string, error) {
 }
 
 //Login logs in to the API using the provided credentials.
-func (w *WhatAPI) Login(username, password string) error {
+func (w *TtpAPI) Login(username, password string) error {
 	params := url.Values{}
 	params.Set("username", username)
 	params.Set("password", password)
@@ -93,7 +93,7 @@ func (w *WhatAPI) Login(username, password string) error {
 }
 
 //Logout logs out of the API, ending the current session.
-func (w *WhatAPI) Logout() error {
+func (w *TtpAPI) Logout() error {
 	params := url.Values{"auth": {w.authkey}}
 	requestURL, err := buildURL(w.baseURL, "logout.php", "", params)
 	if err != nil {
@@ -108,7 +108,7 @@ func (w *WhatAPI) Logout() error {
 }
 
 //GetAccount retrieves account information for the current user.
-func (w *WhatAPI) GetAccount() (Account, error) {
+func (w *TtpAPI) GetAccount() (Account, error) {
 	account := AccountResponse{}
 	requestURL, err := buildURL(w.baseURL, "ajax.php", "index", url.Values{})
 	if err != nil {
@@ -122,7 +122,7 @@ func (w *WhatAPI) GetAccount() (Account, error) {
 }
 
 //GetMailbox retrieves mailbox information for the current user using the provided parameters.
-func (w *WhatAPI) GetMailbox(params url.Values) (Mailbox, error) {
+func (w *TtpAPI) GetMailbox(params url.Values) (Mailbox, error) {
 	mailbox := MailboxResponse{}
 	requestURL, err := buildURL(w.baseURL, "ajax.php", "inbox", params)
 	if err != nil {
@@ -136,7 +136,7 @@ func (w *WhatAPI) GetMailbox(params url.Values) (Mailbox, error) {
 }
 
 //GetConversation retrieves conversation information for the current user using the provided conversation id and parameters.
-func (w *WhatAPI) GetConversation(id int) (Conversation, error) {
+func (w *TtpAPI) GetConversation(id int) (Conversation, error) {
 	conversation := ConversationResponse{}
 	params := url.Values{}
 	params.Set("type", "viewconv")
@@ -153,7 +153,7 @@ func (w *WhatAPI) GetConversation(id int) (Conversation, error) {
 }
 
 //GetNotifications retrieves notification information using the specifed parameters.
-func (w *WhatAPI) GetNotifications(params url.Values) (Notifications, error) {
+func (w *TtpAPI) GetNotifications(params url.Values) (Notifications, error) {
 	notifications := NotificationsResponse{}
 	requestURL, err := buildURL(w.baseURL, "ajax.php", "notifications", params)
 	if err != nil {
@@ -167,7 +167,7 @@ func (w *WhatAPI) GetNotifications(params url.Values) (Notifications, error) {
 }
 
 //GetAnnouncements retrieves announcement information.
-func (w *WhatAPI) GetAnnouncements() (Announcements, error) {
+func (w *TtpAPI) GetAnnouncements() (Announcements, error) {
 	params := url.Values{}
 	announcements := AnnouncementsResponse{}
 	requestURL, err := buildURL(w.baseURL, "ajax.php", "announcements", params)
@@ -182,7 +182,7 @@ func (w *WhatAPI) GetAnnouncements() (Announcements, error) {
 }
 
 //GetSubscriptions retrieves forum subscription information for the current user using the provided parameters.
-func (w *WhatAPI) GetSubscriptions(params url.Values) (Subscriptions, error) {
+func (w *TtpAPI) GetSubscriptions(params url.Values) (Subscriptions, error) {
 	subscriptions := SubscriptionsResponse{}
 	requestURL, err := buildURL(w.baseURL, "ajax.php", "subscriptions", params)
 	if err != nil {
@@ -196,7 +196,7 @@ func (w *WhatAPI) GetSubscriptions(params url.Values) (Subscriptions, error) {
 }
 
 //GetCategories retrieves forum category information.
-func (w *WhatAPI) GetCategories() (Categories, error) {
+func (w *TtpAPI) GetCategories() (Categories, error) {
 	categories := CategoriesResponse{}
 	params := url.Values{}
 	params.Set("type", "main")
@@ -212,7 +212,7 @@ func (w *WhatAPI) GetCategories() (Categories, error) {
 }
 
 //GetForum retrieves forum information using the provided forum id and parameters.
-func (w *WhatAPI) GetForum(id int, params url.Values) (Forum, error) {
+func (w *TtpAPI) GetForum(id int, params url.Values) (Forum, error) {
 	forum := ForumResponse{}
 	params.Set("type", "viewforum")
 	params.Set("forumid", strconv.Itoa(id))
@@ -228,7 +228,7 @@ func (w *WhatAPI) GetForum(id int, params url.Values) (Forum, error) {
 }
 
 //GetThread retrieves forum thread information using the provided thread id and parameters.
-func (w *WhatAPI) GetThread(id int, params url.Values) (Thread, error) {
+func (w *TtpAPI) GetThread(id int, params url.Values) (Thread, error) {
 	thread := ThreadResponse{}
 	params.Set("type", "viewthread")
 	params.Set("threadid", strconv.Itoa(id))
@@ -244,7 +244,7 @@ func (w *WhatAPI) GetThread(id int, params url.Values) (Thread, error) {
 }
 
 //GetArtistBookmarks retrieves artist bookmark information for the current user.
-func (w *WhatAPI) GetArtistBookmarks() (ArtistBookmarks, error) {
+func (w *TtpAPI) GetArtistBookmarks() (ArtistBookmarks, error) {
 	artistBookmarks := ArtistBookmarksResponse{}
 	params := url.Values{}
 	params.Set("type", "artists")
@@ -260,7 +260,7 @@ func (w *WhatAPI) GetArtistBookmarks() (ArtistBookmarks, error) {
 }
 
 //GetTorrentBookmarks retrieves torrent bookmark information for the current user.
-func (w *WhatAPI) GetTorrentBookmarks() (TorrentBookmarks, error) {
+func (w *TtpAPI) GetTorrentBookmarks() (TorrentBookmarks, error) {
 	torrentBookmarks := TorrentBookmarksResponse{}
 	params := url.Values{}
 	params.Set("type", "torrents")
@@ -276,7 +276,7 @@ func (w *WhatAPI) GetTorrentBookmarks() (TorrentBookmarks, error) {
 }
 
 //GetArtist retrieves artist information using the provided artist id and parameters.
-func (w *WhatAPI) GetArtist(id int, params url.Values) (Artist, error) {
+func (w *TtpAPI) GetArtist(id int, params url.Values) (Artist, error) {
 	artist := ArtistResponse{}
 	params.Set("id", strconv.Itoa(id))
 	requestURL, err := buildURL(w.baseURL, "ajax.php", "artist", params)
@@ -291,7 +291,7 @@ func (w *WhatAPI) GetArtist(id int, params url.Values) (Artist, error) {
 }
 
 //GetRequest retrieves request information using the provided request id and parameters.
-func (w *WhatAPI) GetRequest(id int, params url.Values) (Request, error) {
+func (w *TtpAPI) GetRequest(id int, params url.Values) (Request, error) {
 	request := RequestResponse{}
 	params.Set("id", strconv.Itoa(id))
 	requestURL, err := buildURL(w.baseURL, "ajax.php", "request", params)
@@ -306,7 +306,7 @@ func (w *WhatAPI) GetRequest(id int, params url.Values) (Request, error) {
 }
 
 //GetTorrent retrieves torrent information using the provided torrent id and parameters.
-func (w *WhatAPI) GetTorrent(id int, params url.Values) (Torrent, error) {
+func (w *TtpAPI) GetTorrent(id int, params url.Values) (Torrent, error) {
 	torrent := TorrentResponse{}
 	params.Set("id", strconv.Itoa(id))
 	requestURL, err := buildURL(w.baseURL, "ajax.php", "torrent", params)
@@ -321,7 +321,7 @@ func (w *WhatAPI) GetTorrent(id int, params url.Values) (Torrent, error) {
 }
 
 //GetTorrentGroup retrieves torrent group information using the provided torrent group id and parameters.
-func (w *WhatAPI) GetTorrentGroup(id int, params url.Values) (TorrentGroup, error) {
+func (w *TtpAPI) GetTorrentGroup(id int, params url.Values) (TorrentGroup, error) {
 	torrentGroup := TorrentGroupResponse{}
 	params.Set("id", strconv.Itoa(id))
 	requestURL, err := buildURL(w.baseURL, "ajax.php", "torrentgroup", params)
@@ -336,7 +336,7 @@ func (w *WhatAPI) GetTorrentGroup(id int, params url.Values) (TorrentGroup, erro
 }
 
 //SearchTorrents retrieves torrent search results using the provided search string and parameters.
-func (w *WhatAPI) SearchTorrents(searchStr string, params url.Values) (TorrentSearch, error) {
+func (w *TtpAPI) SearchTorrents(searchStr string, params url.Values) (TorrentSearch, error) {
 	torrentSearch := TorrentSearchResponse{}
 	params.Set("searchstr", searchStr)
 	requestURL, err := buildURL(w.baseURL, "ajax.php", "browse", params)
@@ -351,7 +351,7 @@ func (w *WhatAPI) SearchTorrents(searchStr string, params url.Values) (TorrentSe
 }
 
 //SearchRequests retrieves request search results using the provided search string and parameters.
-func (w *WhatAPI) SearchRequests(searchStr string, params url.Values) (RequestsSearch, error) {
+func (w *TtpAPI) SearchRequests(searchStr string, params url.Values) (RequestsSearch, error) {
 	requestsSearch := RequestsSearchResponse{}
 	params.Set("search", searchStr)
 	requestURL, err := buildURL(w.baseURL, "ajax.php", "requests", params)
@@ -366,7 +366,7 @@ func (w *WhatAPI) SearchRequests(searchStr string, params url.Values) (RequestsS
 }
 
 //SearchUsers retrieves user search results using the provided search string and parameters.
-func (w *WhatAPI) SearchUsers(searchStr string, params url.Values) (UserSearch, error) {
+func (w *TtpAPI) SearchUsers(searchStr string, params url.Values) (UserSearch, error) {
 	userSearch := UserSearchResponse{}
 	params.Set("search", searchStr)
 	requestURL, err := buildURL(w.baseURL, "ajax.php", "usersearch", params)
@@ -381,7 +381,7 @@ func (w *WhatAPI) SearchUsers(searchStr string, params url.Values) (UserSearch, 
 }
 
 //GetTopTenTorrents retrieves "top ten torrents" information using the provided parameters.
-func (w *WhatAPI) GetTopTenTorrents(params url.Values) (TopTenTorrents, error) {
+func (w *TtpAPI) GetTopTenTorrents(params url.Values) (TopTenTorrents, error) {
 	topTenTorrents := TopTenTorrentsResponse{}
 	params.Set("type", "torrents")
 	requestURL, err := buildURL(w.baseURL, "ajax.php", "top10", params)
@@ -396,7 +396,7 @@ func (w *WhatAPI) GetTopTenTorrents(params url.Values) (TopTenTorrents, error) {
 }
 
 //GetTopTenTags retrieves "top ten tags" information using the provided parameters.
-func (w *WhatAPI) GetTopTenTags(params url.Values) (TopTenTags, error) {
+func (w *TtpAPI) GetTopTenTags(params url.Values) (TopTenTags, error) {
 	topTenTags := TopTenTagsResponse{}
 	params.Set("type", "tags")
 	requestURL, err := buildURL(w.baseURL, "ajax.php", "top10", params)
@@ -411,7 +411,7 @@ func (w *WhatAPI) GetTopTenTags(params url.Values) (TopTenTags, error) {
 }
 
 //GetTopTenUsers retrieves "top tem users" information using the provided parameters.
-func (w *WhatAPI) GetTopTenUsers(params url.Values) (TopTenUsers, error) {
+func (w *TtpAPI) GetTopTenUsers(params url.Values) (TopTenUsers, error) {
 	topTenUsers := TopTenUsersResponse{}
 	params.Set("type", "users")
 	requestURL, err := buildURL(w.baseURL, "ajax.php", "top10", params)
@@ -426,7 +426,7 @@ func (w *WhatAPI) GetTopTenUsers(params url.Values) (TopTenUsers, error) {
 }
 
 //GetSimilarArtists retrieves similar artist information using the provided artist id and limit.
-func (w *WhatAPI) GetSimilarArtists(id, limit int) (SimilarArtists, error) {
+func (w *TtpAPI) GetSimilarArtists(id, limit int) (SimilarArtists, error) {
 	similarArtists := SimilarArtists{}
 	params := url.Values{}
 	params.Set("id", strconv.Itoa(id))

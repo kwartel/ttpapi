@@ -1,4 +1,4 @@
-package whatapi
+package ttpapi
 
 type Request struct {
 	RequestID       int     `json:"requestId"`
